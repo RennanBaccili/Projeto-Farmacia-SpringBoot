@@ -45,19 +45,20 @@ public class Remedio implements Serializable{
 	private Via via;
 	
 	private String lote;
-	
 	private int quantidade;
 	private LocalDate validade;
 	
 	@Enumerated(EnumType.STRING)
 	private Laboratorio laboratorio;
 
+	private Boolean ativo;
 	
 	public Remedio() {
 	      
 	  }
 
 	public Remedio(DadosCadastroRemedio dados) {
+		this.ativo = true;
 		this.setNome(dados.nome());
 		this.via=dados.via();
 		this.setLote(dados.lote());
@@ -123,6 +124,7 @@ public class Remedio implements Serializable{
 		this.laboratorio = laboratorio;
 	}
 
+
 	public void atualizarInforamcoes(@Valid DadosAtualizarRemedio dados) {
 		if(dados.nome() != null  ) this.nome= dados.nome();
 		
@@ -130,6 +132,16 @@ public class Remedio implements Serializable{
 			
 		if(dados.laboratorio() != null) this.laboratorio=dados.laboratorio();
 	}
+
+	public void inativar() {
+		this.ativo=false;
+	}
+
+	public void ativar() {
+		this.ativo=true;
+	}
+
+
 
 
 }

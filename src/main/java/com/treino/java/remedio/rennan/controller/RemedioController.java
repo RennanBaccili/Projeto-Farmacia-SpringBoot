@@ -37,11 +37,7 @@ public class RemedioController {
 	@PostMapping
 	@Transactional
     public ResponseEntity<String> cadastrar(@RequestBody @Valid DadosCadastroRemedio remedio, BindingResult bindingResult) {
-		  //  verifica se houve erros de validação no objeto remedio. Caso existam erros, o código dentro desse bloco é executado.
-		if (bindingResult.hasErrors()) {
-	        String mensagemErro = construirMensagemErro(bindingResult);
-	        return ResponseEntity.badRequest().body(mensagemErro);
-	    }
+
         try {
             repository.save(new Remedio(remedio));
             return ResponseEntity.ok("Remédio cadastrado com sucesso!");
@@ -52,7 +48,7 @@ public class RemedioController {
 	
 	@GetMapping
 	public ResponseEntity<List<DadosListagemRemedio>> listar (){	
-		return ResponseEntity.ok(repository.findAll().stream().map(DadosListagemRemedio::new).toList());
+		return ResponseEntity.ok(repository.findAllByAtivoTrue().stream().map(DadosListagemRemedio::new).toList());
 	}
 	
 	@PutMapping
@@ -75,6 +71,35 @@ public class RemedioController {
 		}
 		repository.deleteById(id);
 		return ResponseEntity.ok("Exclusão bem-sucedida");
+	}
+	
+	@DeleteMapping("inativar/{id}")
+	@Transactional
+	public ResponseEntity<String> inativar(@PathVariable Long id) {
+	    var optionalRemedio = repository.findById(id);
+
+	    if (optionalRemedio.isPresent()) {
+	        var remedio = optionalRemedio.get();
+	        remedio.inativar();
+	       
+	        return ResponseEntity.ok("Inativação bem-sucedida");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Remédio não encontrado");
+	    }
+	}
+	@PutMapping("ativar/{id}")
+	@Transactional
+	public ResponseEntity<String> ativar(@PathVariable Long id) {
+	    var optionalRemedio = repository.findById(id);
+
+	    if (optionalRemedio.isPresent()) {
+	        var remedio = optionalRemedio.get();
+	        remedio.ativar();
+	       
+	        return ResponseEntity.ok("Ativação bem-sucedida");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Remédio não encontrado");
+	    }
 	}
 	
 	
