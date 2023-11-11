@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.treino.java.remedio.rennan.remedio.Remedio;
 import com.treino.java.remedio.rennan.remedio.dto.DadosAtualizarRemedio;
 import com.treino.java.remedio.rennan.remedio.dto.DadosCadastroRemedio;
+import com.treino.java.remedio.rennan.remedio.dto.DadosDetalhamentoRemedio;
 import com.treino.java.remedio.rennan.remedio.dto.DadosListagemRemedio;
 import com.treino.java.remedio.rennan.remedio.repository.RemedioRepository;
 
@@ -36,14 +36,13 @@ public class RemedioController {
 	//metodo cadastrar é responsável por lidar com a requisição do post
 	@PostMapping
 	@Transactional
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid DadosCadastroRemedio remedio, BindingResult bindingResult) {
-
-        try {
-            repository.save(new Remedio(remedio));
-            return ResponseEntity.ok("Remédio cadastrado com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar o remédio.");
-        }
+    public ResponseEntity<DadosDetalhamentoRemedio> cadastrar(@RequestBody @Valid DadosCadastroRemedio cadastro, UriComponentsBuilder uriBuilder) {
+    	var remedio = new Remedio(cadastro);
+        repository.save(remedio);
+        //gerar uriBuilder
+        var uri = uriBuilder.path("/remedio/{id}").buildAndExpand(remedio.getId()).toUri();
+        
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoRemedio(remedio));
     }
 	
 	@GetMapping
@@ -51,16 +50,20 @@ public class RemedioController {
 		return ResponseEntity.ok(repository.findAllByAtivoTrue().stream().map(DadosListagemRemedio::new).toList());
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<DadosDetalhamentoRemedio> buscarId (@PathVariable Long id){	
+		var remedio = repository.getReferenceById(id);
+		
+		return ResponseEntity.ok().body(new DadosDetalhamentoRemedio(remedio));
+	}
+	
 	@PutMapping
 	@Transactional
-	public ResponseEntity<String> atualizar(@RequestBody @Valid DadosAtualizarRemedio dados, BindingResult bindingResult) {
-	    if (bindingResult.hasErrors()) {
-	        String mensagemErro = construirMensagemErro(bindingResult);
-	        return ResponseEntity.badRequest().body(mensagemErro);
-	    }
+	public ResponseEntity<DadosDetalhamentoRemedio> atualizar(@RequestBody @Valid DadosAtualizarRemedio dados) {
 	    var remedio = repository.getReferenceById(dados.id());
 	    remedio.atualizarInforamcoes(dados);
-	    return ResponseEntity.ok("Atualização bem-sucedida"); // ou qualquer outra mensagem adequada
+	    
+	    return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio)); // ou qualquer outra mensagem adequada
 	}
 	
 	@DeleteMapping("/{id}")
@@ -70,7 +73,7 @@ public class RemedioController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recurso não encontrado");
 		}
 		repository.deleteById(id);
-		return ResponseEntity.ok("Exclusão bem-sucedida");
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("inativar/{id}")
@@ -82,7 +85,7 @@ public class RemedioController {
 	        var remedio = optionalRemedio.get();
 	        remedio.inativar();
 	       
-	        return ResponseEntity.ok("Inativação bem-sucedida");
+	        return ResponseEntity.noContent().build();
 	    } else {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Remédio não encontrado");
 	    }
@@ -96,18 +99,9 @@ public class RemedioController {
 	        var remedio = optionalRemedio.get();
 	        remedio.ativar();
 	       
-	        return ResponseEntity.ok("Ativação bem-sucedida");
+	        return ResponseEntity.noContent().build();
 	    } else {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Remédio não encontrado");
 	    }
-	}
-	
-	
-	private String construirMensagemErro(BindingResult bindingResult) {
-	    var errors = new StringBuilder();
-	    for (FieldError error : bindingResult.getFieldErrors()) {
-	        errors.append(error.getField()).append(": ").append(error.getDefaultMessage()).append(". ");
-	    }
-	    return errors.toString();
 	}
 }

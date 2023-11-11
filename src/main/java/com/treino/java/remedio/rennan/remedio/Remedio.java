@@ -124,6 +124,9 @@ public class Remedio implements Serializable{
 		this.laboratorio = laboratorio;
 	}
 
+	public Boolean getAtivo() {
+		return ativo;
+	}
 
 	public void atualizarInforamcoes(@Valid DadosAtualizarRemedio dados) {
 		if(dados.nome() != null  ) this.nome= dados.nome();
@@ -140,6 +143,8 @@ public class Remedio implements Serializable{
 	public void ativar() {
 		this.ativo=true;
 	}
+
+	
 
 
 
