@@ -15,15 +15,15 @@ public record DadosDetalhamentoRemedio(
 		Boolean ativo) {
 
 	public DadosDetalhamentoRemedio(Remedio remedio) {
-		this(remedio.getId(),
-			remedio.getNome(),
-			remedio.getVia(),
-			remedio.getLote(),
-			remedio.getQuantidade(),
-			remedio.getValidade(),
-			remedio.getAtivo()
-			);
+		this(
+				remedio.getId(),
+				remedio.getNome(),
+				remedio.getVia(),
+				remedio.getLote(),
+				remedio.getQuantidade(),
+				remedio.getValidade(),
+				remedio.getAtivo());
+		
 	}
-
 
 }
