@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.treino.java.remedio.rennan.infra.TokenService;
 import com.treino.java.remedio.rennan.usuarios.DadosAutenticacao;
+import com.treino.java.remedio.rennan.usuarios.Usuario;
 
 import jakarta.validation.Valid;
 
@@ -21,6 +23,9 @@ public class AuthenticacaoController {
 	@Autowired
 	private AuthenticationManager manager;
 	
+	@Autowired
+	private TokenService tokenService;
+	
 	@PostMapping
 	public ResponseEntity<?> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados){
 		
@@ -29,6 +34,6 @@ public class AuthenticacaoController {
 		// e verifico se o token está autenticado
 		
 		var autenticacao = manager.authenticate(token);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(tokenService.gerarToken((Usuario)autenticacao.getPrincipal()));
 	}
 }
