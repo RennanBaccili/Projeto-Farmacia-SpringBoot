@@ -18,9 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 
@@ -30,8 +28,6 @@ import lombok.Setter;
 @EqualsAndHashCode(of="id")
 @Entity(name="remedio")
 @Table(name="remedios")
-@Getter
-@Setter
 public class Remedio implements Serializable{
 
 	private static final long serialVersionUID = 1L;

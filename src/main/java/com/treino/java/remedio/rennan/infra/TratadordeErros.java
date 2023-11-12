@@ -26,7 +26,7 @@ public class TratadordeErros {
 		return ResponseEntity.badRequest().body(erros.stream().map(DadosErros::new).toList());
 	}
 	//DTO
-	public record DadosErros(String message, String field) {
+	public record DadosErros(String campo, String mensagem) {
 		public DadosErros(FieldError error) {
 			this(error.getField(),error.getDefaultMessage());
 		}
