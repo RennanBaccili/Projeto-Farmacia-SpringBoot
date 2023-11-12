@@ -1,9 +1,6 @@
-package com.treino.java.remedio.rennan.remedio.dto;
+package com.treino.java.remedio.rennan.remedio;
 
 import java.time.LocalDate;
-
-import com.treino.java.remedio.rennan.remedio.enums.Laboratorio;
-import com.treino.java.remedio.rennan.remedio.enums.Via;
 
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Future;

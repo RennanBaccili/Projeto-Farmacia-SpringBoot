@@ -1,4 +1,4 @@
-package com.treino.java.remedio.rennan.remedio.enums;
+package com.treino.java.remedio.rennan.remedio;
 
 public enum Via {
 

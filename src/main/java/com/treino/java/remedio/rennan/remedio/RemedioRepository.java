@@ -1,10 +1,8 @@
-package com.treino.java.remedio.rennan.remedio.repository;
+package com.treino.java.remedio.rennan.remedio;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.treino.java.remedio.rennan.remedio.Remedio;
 
 public interface RemedioRepository extends JpaRepository<Remedio, Long>{
 

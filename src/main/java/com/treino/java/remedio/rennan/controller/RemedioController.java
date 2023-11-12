@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.treino.java.remedio.rennan.remedio.DadosAtualizarRemedio;
+import com.treino.java.remedio.rennan.remedio.DadosCadastroRemedio;
+import com.treino.java.remedio.rennan.remedio.DadosDetalhamentoRemedio;
+import com.treino.java.remedio.rennan.remedio.DadosListagemRemedio;
 import com.treino.java.remedio.rennan.remedio.Remedio;
-import com.treino.java.remedio.rennan.remedio.dto.DadosAtualizarRemedio;
-import com.treino.java.remedio.rennan.remedio.dto.DadosCadastroRemedio;
-import com.treino.java.remedio.rennan.remedio.dto.DadosDetalhamentoRemedio;
-import com.treino.java.remedio.rennan.remedio.dto.DadosListagemRemedio;
-import com.treino.java.remedio.rennan.remedio.repository.RemedioRepository;
+import com.treino.java.remedio.rennan.remedio.RemedioRepository;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

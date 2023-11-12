@@ -1,10 +1,6 @@
-package com.treino.java.remedio.rennan.remedio.dto;
+package com.treino.java.remedio.rennan.remedio;
 
 import java.time.LocalDate;
-
-import com.treino.java.remedio.rennan.remedio.Remedio;
-import com.treino.java.remedio.rennan.remedio.enums.Laboratorio;
-import com.treino.java.remedio.rennan.remedio.enums.Via;
 
 public record DadosListagemRemedio(
 		Long id,

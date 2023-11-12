@@ -3,11 +3,6 @@ package com.treino.java.remedio.rennan.remedio;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.treino.java.remedio.rennan.remedio.dto.DadosAtualizarRemedio;
-import com.treino.java.remedio.rennan.remedio.dto.DadosCadastroRemedio;
-import com.treino.java.remedio.rennan.remedio.enums.Laboratorio;
-import com.treino.java.remedio.rennan.remedio.enums.Via;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
